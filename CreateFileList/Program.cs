@@ -18,6 +18,7 @@ namespace CreateFileList
             // ファイルのリストを作成
             var targetDir = args[0];
             var list = Directory.EnumerateFiles(targetDir, "*.*", SearchOption.AllDirectories)
+                .OrderBy(_ => _)
                 .Select((_, i) => new {i, fi = new FileInformation(_.Substring(targetDir.Length + 1), _)});
 
             // ファイルのリストを標準出力に書き込む
