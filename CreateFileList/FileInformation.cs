@@ -63,6 +63,8 @@ namespace CreateFileList
             DateTime? buildDateTime;
             string linkerVersion;
             ReadPeInfo(fileFullPath, out buildDateTime, out linkerVersion);
+            BuildDateTime = buildDateTime;
+            LinkerVersion = linkerVersion;
         }
 
         /// <summary>
