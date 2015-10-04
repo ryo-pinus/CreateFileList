@@ -134,11 +134,21 @@ namespace CreateFileList
                 ProductVersion, BuildDateTime.ToString(), LinkerVersion });
         }
 
+        /// <summary>
+        /// time_tをDateTime構造体に変換する。
+        /// </summary>
+        /// <param name="time">time_t。</param>
+        /// <returns>変換後の値。</returns>
         private DateTime ToDateTime(int time)
         {
             return new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(time).ToLocalTime();
         }
 
+        /// <summary>
+        /// PEヘッダを保持しているか確認する。
+        /// </summary>
+        /// <param name="filePath">ファイルパス。</param>
+        /// <returns>PEヘッダを保持しているファイルの場合はtrueが返る。</returns>
         private bool HasPeHeader(string filePath)
         {
             var targetExt = new string[] { ".exe", ".dll" };
@@ -146,6 +156,12 @@ namespace CreateFileList
             return targetExt.Any(_ => string.Equals(_, ext, StringComparison.OrdinalIgnoreCase));
         }
 
+        /// <summary>
+        /// PEヘッダから必要な情報を読みだす。
+        /// </summary>
+        /// <param name="filePath">ファイルパス。</param>
+        /// <param name="buildDateTime">読みだしたビルド日時。</param>
+        /// <param name="linkerVersion">読みだしたリンカバージョン。</param>
         private void ReadPeInfo(string filePath, out DateTime? buildDateTime, out string linkerVersion)
         {
             buildDateTime = null;
@@ -179,6 +195,11 @@ namespace CreateFileList
             }
         }
 
+        /// <summary>
+        /// ハッシュ文字列を作成する。
+        /// </summary>
+        /// <param name="filePath">ファイルパス。</param>
+        /// <returns>ハッシュ文字列。</returns>
         private string CreateHashString(string filePath)
         {
             try

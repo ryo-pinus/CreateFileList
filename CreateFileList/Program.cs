@@ -17,18 +17,17 @@ namespace CreateFileList
 
             // ファイルのリストを作成
             var targetDir = args[0];
-            var fiList = Directory.EnumerateFiles(targetDir, "*.*", SearchOption.AllDirectories)
-                .Select(_ => new FileInformation(_.Substring(targetDir.Length + 1), _))
-                .ToArray();
+            var list = Directory.EnumerateFiles(targetDir, "*.*", SearchOption.AllDirectories)
+                .Select((_, i) => new {i, fi = new FileInformation(_.Substring(targetDir.Length + 1), _)});
 
             // ファイルのリストを標準出力に書き込む
-            for (int i = 0; i < fiList.Length; i++)
+            foreach (var item in list)
             {
-                if (i == 0)
+                if (item.i == 0)
                 {
-                    Console.WriteLine(fiList[i].ToStringHeader());
+                    Console.WriteLine(item.fi.ToStringHeader());
                 }
-                Console.WriteLine(fiList[i].ToString());
+                Console.WriteLine(item.fi.ToString());
             }
             return 0;
         }
