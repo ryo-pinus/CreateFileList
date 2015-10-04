@@ -34,18 +34,17 @@ namespace CreateFileList
             // SHA256ハッシュの作成
             HashString = CreateHashString(fileFullPath);
 
-            // ファイルサイズ
+            // ファイルサイズ・更新日時
             try
             {
                 FileSize = fi.Length;
+                LastWriteTime = fi.LastWriteTime;
             }
             catch
             {
                 FileSize = 0;
+                LastWriteTime = null;
             }
-
-            // 更新日時
-            LastWriteTime = fi.LastWriteTime;
 
             // ファイルバージョン・プロダクトバージョン
             try
