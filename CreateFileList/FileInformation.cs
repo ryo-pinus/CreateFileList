@@ -170,21 +170,18 @@ namespace CreateFileList
             {
                 try
                 {
-                    using (var fs = File.OpenRead(filePath))
+                    using (var reader = new BinaryReader(File.OpenRead(filePath), Encoding.ASCII))
                     {
-                        using (var reader = new BinaryReader(fs, Encoding.ASCII))
-                        {
-                            reader.BaseStream.Seek(OFF_SET_OF_E_LFANEW, SeekOrigin.Begin);
-                            var e_lfanew = reader.ReadInt32();
+                        reader.BaseStream.Seek(OFF_SET_OF_E_LFANEW, SeekOrigin.Begin);
+                        var e_lfanew = reader.ReadInt32();
 
-                            reader.BaseStream.Seek(e_lfanew + OFF_SET_OF_TIME_DATE_STAMP, SeekOrigin.Begin);
-                            buildDateTime = ToDateTime(reader.ReadInt32());
+                        reader.BaseStream.Seek(e_lfanew + OFF_SET_OF_TIME_DATE_STAMP, SeekOrigin.Begin);
+                        buildDateTime = ToDateTime(reader.ReadInt32());
 
-                            reader.BaseStream.Seek(e_lfanew + OFF_SET_OF_LINKER_VERSION, SeekOrigin.Begin);
-                            var majorLinkerVersion = reader.ReadSByte();
-                            var minorLinkerVersion = reader.ReadSByte();
-                            linkerVersion = string.Format("{0}.{1}", majorLinkerVersion, minorLinkerVersion);
-                        }
+                        reader.BaseStream.Seek(e_lfanew + OFF_SET_OF_LINKER_VERSION, SeekOrigin.Begin);
+                        var majorLinkerVersion = reader.ReadSByte();
+                        var minorLinkerVersion = reader.ReadSByte();
+                        linkerVersion = string.Format("{0}.{1}", majorLinkerVersion, minorLinkerVersion);
                     }
                 }
                 catch
